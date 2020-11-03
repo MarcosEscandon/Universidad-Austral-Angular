@@ -1,4 +1,5 @@
-export class DestinoViaje {	 
+export class DestinoViaje {
+    [x: string]: any;	 
 	private selected: boolean;
 	public servicios: string[];
 	constructor(public nombre: string, public u: string) {

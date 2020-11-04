@@ -4,7 +4,6 @@ import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 import { DestinoViaje } from "./destino-viaje.model";
-import { type } from 'os';
 
 // Estado
 export interface DestinosViajesState {
@@ -24,7 +23,9 @@ export const initializeDestinosViajesState = function() { // Quizas esta mal esc
 // Acciones
 export enum DestinosViajesActionTypes {
     NUEVO_DESTINO = '[Destinos Viajes] Nuevo',
-    ELEGIDO_FAVORITO = '[Destinos Viajes] Favorito'
+    ELEGIDO_FAVORITO = '[Destinos Viajes] Favorito',
+    VOTE_UP = '[Destinos Viajes] Vote Up',
+    VOTE_DOWN = '[Destinos Viajes] Vote Down'
 }
 
 export class NuevoDestinoAction implements Action {
@@ -37,7 +38,17 @@ export class ElegidoFavoritoAction implements Action {
     constructor(public destino: DestinoViaje) {}
 }
 
-export type DestinosViajesActions = NuevoDestinoAction | ElegidoFavoritoAction;
+export class VoteUpAction implements Action {
+    type = DestinosViajesActionTypes.VOTE_UP;
+    constructor(public destino: DestinoViaje) {}
+}
+
+export class VoteDownAction implements Action {
+    type = DestinosViajesActionTypes.VOTE_DOWN;
+    constructor(public destino: DestinoViaje) {}
+}
+
+export type DestinosViajesActions = NuevoDestinoAction | ElegidoFavoritoAction | VoteUpAction | VoteDownAction;
 
 // Reducers
 export function reducerDestinosViajes(
@@ -59,6 +70,16 @@ export function reducerDestinosViajes(
                 ...state,
                 favorito: fav
             };
+        }
+        case DestinosViajesActionTypes.VOTE_UP: {
+            const d: DestinoViaje = (action as VoteUpAction).destino;
+            d.voteUp();
+            return { ...state };
+        }
+        case DestinosViajesActionTypes.VOTE_DOWN: {                     
+            const d: DestinoViaje = (action as VoteDownAction).destino;
+            d.voteDown();
+            return { ...state };
         }
     }
     return state;

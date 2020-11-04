@@ -1,27 +1,17 @@
 import { DestinoViaje} from './destino-viaje.model';
-import { BehaviorSubject, Subject } from "rxjs";
+import { AppState } from '../app.module';
+import { Store } from '@ngrx/store';
+import { ElegidoFavoritoAction, NuevoDestinoAction } from './destinos-viajes-state.model';
+import { Injectable } from "@angular/core";
 
+@Injectable() 
 export class DestinosApiClient {
-    destinos:DestinoViaje[];
-    current: Subject<DestinoViaje> = new BehaviorSubject<DestinoViaje>(null);
-    constructor() {
-        this.destinos = [];
+    constructor(private store: Store<AppState>) {
     }
     add(d:DestinoViaje) {
-        this.destinos.push(d);
-    }
-    getAll():DestinoViaje[] {
-        return this.destinos;
-    }
-    getById(id:string):DestinoViaje{
-        return this.destinos.filter(function(d) {return d.id.toString() == id; })[0];
-    }
+        this.store.dispatch(new NuevoDestinoAction(d)); 
+    }    
     elegir(d: DestinoViaje) {
-        this.destinos.forEach(x  => x.setSelected(false));
-        d.setSelected(true);
-        this.current.next(d);
-    }
-    subscribeOnChange(fn) {
-        this.current.subscribe(fn);
-    }
+        this.store.dispatch(new ElegidoFavoritoAction(d));
+    } 
 }

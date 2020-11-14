@@ -12,7 +12,7 @@ import { DestinoViajeComponent } from './components/destino-viaje/destino-viaje.
 import { ListaDestinosComponent } from './components/lista-destinos/lista-destinos.component';
 import { DestinoDetalleComponent } from './components/destino-detalle/destino-detalle.component';
 import { FormDestinoViajeComponent } from './components/form-destino-viaje/form-destino-viaje.component';
-import { DestinosApiClient } from './models/destinos-api-client.model';
+// import { DestinosApiClient } from './models/destinos-api-client.model';
 import { DestinosViajesEffects, DestinosViajesState, initializeDestinosViajesState, reducerDestinosViajes } from './models/destinos-viajes-state.model';
 import { LoginComponent } from './components/login/login/login.component';
 import { ProtectedComponent } from './components/protected/protected/protected.component';
@@ -22,6 +22,7 @@ import { VuelosComponentComponent } from './components/vuelos/vuelos-component/v
 import { VuelosMainComponentComponent } from './components/vuelos/vuelos-main-component/vuelos-main-component.component';
 import { VuelosMasInfoComponentComponent } from './components/vuelos/vuelos-mas-info-component/vuelos-mas-info-component.component';
 import { VuelosDetalleComponent } from './components/vuelos/vuelos-detalle-component/vuelos-detalle-component.component';
+import { ReservasModule } from './reservas/reservas.module';
 
 export const childrenRoutesVuelos: Routes = [
   {path: '', redirectTo: 'main', pathMatch: 'full'},
@@ -85,7 +86,8 @@ let reducersInitialState = {
     RouterModule.forRoot(routes),
     NgRxStoreModule.forRoot(reducers, {initialState: reducersInitialState}),
     EffectsModule.forRoot([DestinosViajesEffects]),
-    StoreDevtoolsModule.instrument() 
+    StoreDevtoolsModule.instrument(),
+    ReservasModule 
   ],
   providers: [
     DestinosApiClient, AuthService, UsuarioLogueadoGuard

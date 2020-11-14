@@ -6,6 +6,9 @@ import { Injectable } from "@angular/core";
 
 @Injectable() 
 export class DestinosApiClient {
+    getById(id: string): DestinoViaje {
+      throw new Error('Method not implemented.');
+    }
     constructor(private store: Store<AppState>) {
     }
     add(d:DestinoViaje) {

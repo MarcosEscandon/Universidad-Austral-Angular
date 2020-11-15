@@ -5,6 +5,7 @@ import { ActivatedRoute } from "@angular/router";
 import { AppState } from 'src/app/app.module';
 import { Store } from '@ngrx/store';
 
+/*
 class DestinosApiClientViejo {
   getById(id: string): DestinoViaje {
     console.log('llamando por la clase vieja!');
@@ -26,24 +27,28 @@ class DestinosApiClientDecorated extends DestinosApiClient {
   }
   getById(id: String): DestinoViaje {
     console.log('llamando por la clase decorada!');
-    console.log('config ' + this.config.apiEndpoint),
+    console.log('config ' + this.config.apiEndpoint);
     return super.getById(id);
   }
 }
+*/
 
 @Component({
   selector: 'app-destino-detalle',
   templateUrl: './destino-detalle.component.html',
   styleUrls: ['./destino-detalle.component.css'],
-  providers: [
+  providers: [DestinosApiClient]
+   
+   /*
     {provide: APP_CONFIG, useValue: APP_CONFIG_VALUE},
     {provide: DestinosApiClient, useClass: DestinosApiClientDecorated},
     {provide: DestinosApiClientViejo, useExisting: DestinosApiClient}]
+    */
 })
 export class DestinoDetalleComponent implements OnInit {
   destino: DestinoViaje;
 
-  constructor(private route: ActivatedRoute, private destinosApiClient: DestinosApiClientViejo) {}
+  constructor(private route: ActivatedRoute, private destinosApiClient: DestinosApiClient) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');

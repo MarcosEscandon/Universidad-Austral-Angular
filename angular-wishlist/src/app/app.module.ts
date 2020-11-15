@@ -6,6 +6,7 @@ import { StoreModule as NgRxStoreModule, ActionReducerMap, Store } from "@ngrx/s
 import { EffectsModule } from "@ngrx/effects";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { HttpClient, HttpClientModule, HttpHeaders, HttpRequest } from "@angular/common/http";
+import Dexie from 'dexie';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +25,7 @@ import { VuelosMainComponentComponent } from './components/vuelos/vuelos-main-co
 import { VuelosMasInfoComponentComponent } from './components/vuelos/vuelos-mas-info-component/vuelos-mas-info-component.component';
 import { VuelosDetalleComponent } from './components/vuelos/vuelos-detalle-component/vuelos-detalle-component.component';
 import { ReservasModule } from './reservas/reservas.module';
+import { DestinoViaje } from './models/destino-viaje.model';
 
 // app config
 export interface AppConfig {
@@ -87,10 +89,27 @@ class AppLoadService {
     const headers: HttpHeaders = new HttpHeaders({'X-API-TOKEN': 'token-seguridad'});
     const req = new HttpRequest('GET', APP_CONFIG_VALUE.apiEndpoint + '/my', {headers: headers});
     const response: any = await this.http.request(req).toPromise();
-    this.store.dispatch(new initMyDataAction(response.body)); 
+    this.store.dispatch(new initMyDataAction(response.body));  
   }
 }
 // fin app init
+
+// dexie db
+@Injectable({
+  providedIn: 'root'
+})
+export class MyDatabase extends Dexie {
+  destinos: Dexie.Table<DestinoViaje, number>;
+  constructor () {
+    super('MyDatabase');
+    this.version(1).stores({
+      destinos: '++id, nombre, imagenUrl',
+    });
+  }
+}
+
+export const db = new MyDatabase();
+// fin dexie db
 
 @NgModule({
   declarations: [
@@ -121,7 +140,8 @@ class AppLoadService {
   providers: [
     AuthService, UsuarioLogueadoGuard,
     {provide: APP_CONFIG, useValue: APP_CONFIG_VALUE},
-    AppLoadService, {provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true}
+    AppLoadService, {provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true},
+    MyDatabase
   ],
   bootstrap: [AppComponent]
 })

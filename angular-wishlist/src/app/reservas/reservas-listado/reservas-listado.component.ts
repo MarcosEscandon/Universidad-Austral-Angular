@@ -8,7 +8,7 @@ import { ReservasApiClientService } from '../reservas-api-client.service';
 })
 export class ReservasListadoComponent implements OnInit {
 
-  constructor(private api: ReservasApiClientService) { }
+  constructor(public api: ReservasApiClientService) { } // private tirar error
 
   ngOnInit(): void {
   }

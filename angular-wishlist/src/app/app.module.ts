@@ -8,6 +8,8 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { HttpClient, HttpClientModule, HttpHeaders, HttpRequest } from "@angular/common/http";
 import Dexie from 'dexie';
 import { TranslateLoader, TranslateModule, TranslateService } from "@ngx-translate/core";
+import { NgxMapboxGLModule } from "ngx-mapbox-gl";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,6 +31,7 @@ import { ReservasModule } from './reservas/reservas.module';
 import { DestinoViaje } from './models/destino-viaje.model';
 import { from, Observable } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
+import { EspiameDirective } from './espiame.directive';
 
 // app config
 export interface AppConfig {
@@ -171,6 +174,7 @@ function HttpLoaderFactory(http: HttpClient) {
     VuelosMainComponentComponent,
     VuelosMasInfoComponentComponent,
     VuelosDetalleComponent,
+    EspiameDirective,
   ],
   imports: [
     AppRoutingModule,
@@ -178,6 +182,8 @@ function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxMapboxGLModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot(routes),
     NgRxStoreModule.forRoot(reducers, {initialState: reducersInitialState}),
     EffectsModule.forRoot([DestinosViajesEffects]),
